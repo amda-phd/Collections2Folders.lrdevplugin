@@ -11,7 +11,7 @@ return {
   LrExportMenuItems = {
       {
           title = "Export Collections and Sets as Folders",
-          file = "ExportCollectionSet.lua", -- Replace with the name of your Lua file containing export functionality
+          file = "GUI.lua", -- Replace with the name of your Lua file containing export functionality
       },
   },
   UUID = "C728DAA1-036A-4C0A-94D2-7ABECD0EB4C6", -- Generated UUID for your plugin

@@ -7,12 +7,15 @@ return {
   LrPluginAuthor = "amda",
   LrPluginVersion = "0.1.0",
   LrPluginDescription = "Export collections and collection sets hierarchy as folders.",
-  -- LrInitPlugin = "Init.lua", -- The entry point for your plugin
   LrExportMenuItems = {
       {
-          title = "Export Collections and Sets as Folders",
-          file = "GUI.lua", -- Replace with the name of your Lua file containing export functionality
+          title = "Select and export one collection set",
+          file = "ExportCollectionSetGUI.lua", -- Replace with the name of your Lua file containing export functionality
       },
+      {
+        title = "Export all the collection sets in the catalog",
+        file = "ExportAllCollectionSetsGUI.lua", -- Replace with the name of your Lua file containing export functionality
+    },
   },
   UUID = "C728DAA1-036A-4C0A-94D2-7ABECD0EB4C6", -- Generated UUID for your plugin
   UUIDs = {

@@ -52,14 +52,18 @@ local function showExportDialog()
           }
 
           local result = LrDialogs.presentModalDialog({
-            title = "Select Collection Set",
+            title = "Select and export one Collection Set",
             contents = contents,
           })
 
           if result == 'ok' then
-            LrTasks.startAsyncTask(function()
-              ExportCollectionSet.exportCollectionSet(properties.collectionSet, properties.rootPath)
-            end)
+            if properties.rootPath then
+              LrTasks.startAsyncTask(function()
+                ExportCollectionSet.exportCollectionSet(properties.collectionSet, properties.rootPath)
+              end)
+            else
+              LrDialogs.message("Error", "Please select a folder before proceeding.", "critical")
+            end
           end
         end
       )

@@ -1,40 +1,15 @@
-local LrTasks = import 'LrTasks'
 local LrExportSession = import 'LrExportSession'
-local LrApplication = import 'LrApplication'
-local LrPathUtils = import 'LrPathUtils'
-local LrFileUtils = import 'LrFileUtils'
-
-local catalog = LrApplication.activeCatalog()
-local rootPath = "/path/to/your/photos"
-
-local function createFolder(path)
-  if not LrFileUtils.exists(path) then
-    LrFileUtils.createDirectory(path)
-  end
-end
-
-local function defineDestination(root, name)
-  local outputPath = LrPathUtils.child(root, name)
-  createFolder(outputPath)
-  return outputPath
-end
-
-local function len(array)
-  local i=0 for _ in pairs(array) do
-    i = i + 1
-  end
-  return i
-end
+local Utils = require 'Utils'
 
 local function exportCollection(collection, path) 
   local photos = collection:getPhotos()
 
-  if (len(photos) == 0) then
+  if (Utils.len(photos) == 0) then
     return
   end
 
   local folderName = collection:getName():gsub("/", '-'):gsub(":", "-"):gsub("!", ""):gsub("?", ""):gsub("¿", ""):gsub("¡", "")
-  local outputPath = defineDestination(path, folderName)
+  local outputPath = Utils.defineDestination(path, folderName)
 
   local exportSettings = {
     LR_format = "JPEG",
@@ -65,42 +40,7 @@ local function exportCollection(collection, path)
   exportSession:doExportOnCurrentTask()
 end
 
-local function exportCollectionSet(collectionSet, path)
-  local childCollectionSets = collectionSet:getChildCollectionSets()
-  local childCollections = collectionSet:getChildCollections()
-  local outputPath = defineDestination(path, collectionSet:getName())
-
-  for _, childCollectionSet in ipairs(childCollectionSets) do
-    exportCollectionSet(childCollectionSet, outputPath)
-  end
-
-  for _, childCollection in ipairs(childCollections) do
-    exportCollection(childCollection, outputPath)
-  end
-end
-
-LrTasks.startAsyncTask(
-  function()
-    
-    -- local collections = catalog:getChildCollections()
-    -- exportCollection(collections[1])
-
-    local collectionSets = catalog:getChildCollectionSets()
-    -- exportCollectionSet(collectionSets[6], rootPath)
-    for _, collectionSet in ipairs(collectionSets) do
-      if collectionSet:getName() == "Móvil - Compacta" then
-        exportCollectionSet(collectionSet, rootPath)
-      end
-    end
-
-    -- Iterate through all collections
-    -- for _, collection in ipairs(collections) do
-    --   -- Check if it's a collection folder (optional)
-    --   if collection:getCollectionType() == "folder" then
-    --     exportCollection(collection)
-    --   end
-    -- end
-  end
-)
-
+return {
+  exportCollection = exportCollection
+}
 

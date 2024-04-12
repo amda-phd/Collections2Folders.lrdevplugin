@@ -6,7 +6,6 @@ local LrApplication = import 'LrApplication'
 local LrTasks = import 'LrTasks'
 
 local ExportCollectionSet = require 'ExportCollectionSet'
-local rootPath = ""
 
 local function showExportDialog()
 
@@ -30,9 +29,25 @@ local function showExportDialog()
           local contents = f:column {
             bind_to_object = properties,
             spacing = f:control_spacing(),
+            f:static_text {
+              title = string.rep('¨¨..', 10),  -- Add a long string of non-breaking spaces to make the dialog a bit wider...
+            },
             f:popup_menu {
               value = LrView.bind('collectionSet'),
               items = items,
+            },
+            f:push_button {
+              title = "Select Folder",
+              action = function()
+                local result = LrDialogs.runOpenPanel({canChooseDirectories = true, allowsMultipleSelection = false, canChooseFiles = false})
+                if result then
+                  properties.rootPath = result[1]
+                end
+              end,
+            },
+            f:static_text {
+              title = LrView.bind('rootPath'),
+              fill_horizontal = 1 -- This makes the text line extend horizontally. Otherwise, it's barely visible
             },
           }
 
@@ -43,7 +58,7 @@ local function showExportDialog()
 
           if result == 'ok' then
             LrTasks.startAsyncTask(function()
-              ExportCollectionSet.exportCollectionSet(properties.collectionSet, rootPath)
+              ExportCollectionSet.exportCollectionSet(properties.collectionSet, properties.rootPath)
             end)
           end
         end

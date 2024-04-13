@@ -51,6 +51,23 @@ local function showExportDialog()
             title = LrView.bind('rootPath'),
             fill_horizontal = 1,
           },
+          f:static_text {
+            title = "A export settings file is optional, but not providing it will use Lightroom's defaults",
+            fill_horizontal = 1,
+          },
+          f:push_button {
+            title = "Select Export Settings",
+            action = function()
+              local result = LrDialogs.runOpenPanel({canChooseFiles = true, allowsMultipleSelection = false, canChooseDirectories = false, prompt = "Select ExportSettings.txt"})
+              if result then
+                properties.exportSettingsPath = result[1]
+              end
+            end,
+          },
+          f:static_text {
+            title = LrView.bind('exportSettingsPath'),
+            fill_horizontal = 1,
+          },
         }
 
         local result = LrDialogs.presentModalDialog({
@@ -62,7 +79,7 @@ local function showExportDialog()
         if result == 'ok' then
           if properties.rootPath then
             LrTasks.startAsyncTask(function()
-              ExportCollectionSet.exportCollectionSets(collectionSets, properties.rootPath)
+              ExportCollectionSet.exportCollectionSets(collectionSets, properties.rootPath, properties.exportSettingsPath)
             end)
           else
             LrDialogs.message("Error", "Please select a folder before proceeding.", "critical")

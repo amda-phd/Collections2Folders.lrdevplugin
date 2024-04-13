@@ -1,7 +1,7 @@
 return {
   LrSdkVersion = 13.0,
-  LrSdkMinimumVersion = 13.0, -- Minimum SDK version required
-  LrToolkitIdentifier = "com.amda.Collections2Folders", -- Unique identifier for your plugin
+  LrSdkMinimumVersion = 13.0,
+  LrToolkitIdentifier = "com.amda.Collections2Folders", 
   LrPluginName = "Collections2Folders",
   LrPluginInfoUrl = "https://github.com/amda/Collections2Folders", -- URL for more info (replace with your GitHub URL)
   LrPluginAuthor = "amda",
@@ -10,16 +10,16 @@ return {
   LrExportMenuItems = {
       {
           title = "Select and export one collection set",
-          file = "ExportCollectionSetGUI.lua", -- Replace with the name of your Lua file containing export functionality
+          file = "ExportCollectionSetGUI.lua",
       },
       {
         title = "Export all the collection sets in the catalog",
-        file = "ExportAllCollectionSetsGUI.lua", -- Replace with the name of your Lua file containing export functionality
+        file = "ExportAllCollectionSetsGUI.lua",
     },
   },
-  UUID = "C728DAA1-036A-4C0A-94D2-7ABECD0EB4C6", -- Generated UUID for your plugin
+  UUID = "C728DAA1-036A-4C0A-94D2-7ABECD0EB4C6",
   UUIDs = {
-      main = "C728DAA1-036A-4C0A-94D2-7ABECD0EB4C6", -- Main UUID for the plugin
-      ["ExportCollections.lua"] = "AB28E7DE-3C61-4AAE-B73D-5DF3C92FFBA1", -- UUID for your export Lua file
+      main = "C728DAA1-036A-4C0A-94D2-7ABECD0EB4C6",
+      ["ExportCollections.lua"] = "AB28E7DE-3C61-4AAE-B73D-5DF3C92FFBA1",
   },
 }

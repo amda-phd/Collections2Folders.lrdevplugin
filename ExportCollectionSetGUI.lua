@@ -30,7 +30,12 @@ local function showExportDialog()
             bind_to_object = properties,
             spacing = f:control_spacing(),
             f:static_text {
-              title = string.rep('¨¨..', 10),  -- Add a long string of non-breaking spaces to make the dialog a bit wider...
+              title = "Pressing OK will export the selected collection set and all their contents to the selected path.",
+              fill_horizontal = 1,
+            },
+            f:static_text {
+              title = "Remember that, depending on the number of nested collections, this might take a while:",
+              fill_horizontal = 1,
             },
             f:popup_menu {
               value = LrView.bind('collectionSet'),
@@ -49,6 +54,23 @@ local function showExportDialog()
               title = LrView.bind('rootPath'),
               fill_horizontal = 1 -- This makes the text line extend horizontally. Otherwise, it's barely visible
             },
+            f:static_text {
+              title = "A export settings file is optional, but not providing it will use Lightroom's defaults",
+              fill_horizontal = 1,
+            },
+            f:push_button {
+              title = "Select Export Settings",
+              action = function()
+                local result = LrDialogs.runOpenPanel({canChooseFiles = true, allowsMultipleSelection = false, canChooseDirectories = false, prompt = "Select ExportSettings.txt"})
+                if result then
+                  properties.exportSettingsPath = result[1]
+                end
+              end,
+            },
+            f:static_text {
+              title = LrView.bind('exportSettingsPath'),
+              fill_horizontal = 1,
+            },
           }
 
           local result = LrDialogs.presentModalDialog({
@@ -59,7 +81,7 @@ local function showExportDialog()
           if result == 'ok' then
             if properties.rootPath then
               LrTasks.startAsyncTask(function()
-                ExportCollectionSet.exportCollectionSet(properties.collectionSet, properties.rootPath)
+                ExportCollectionSet.exportCollectionSet(properties.collectionSet, properties.rootPath, properties.exportSettingsPath)
               end)
             else
               LrDialogs.message("Error", "Please select a folder before proceeding.", "critical")

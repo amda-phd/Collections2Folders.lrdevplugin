@@ -4,10 +4,9 @@ local LrTasks = import 'LrTasks'
 local ExportCollection = require 'ExportCollection'
 local Utils = require 'Utils'
 
--- local rootPath = "E:\\Pics\\Test"
--- local catalog = LrApplication.activeCatalog()
+local function exportCollectionSet(collectionSet, path, exportSettingsPath)
+  local exportSettings = Utils.loadExportSettings(exportSettingsPath)
 
-local function exportCollectionSet(collectionSet, path)
   local childCollectionSets = collectionSet:getChildCollectionSets()
   local childCollections = collectionSet:getChildCollections()
   local outputPath = Utils.defineDestination(path, collectionSet:getName())
@@ -17,30 +16,13 @@ local function exportCollectionSet(collectionSet, path)
   end
 
   for _, childCollection in ipairs(childCollections) do
-    ExportCollection.exportCollection(childCollection, outputPath)
+    ExportCollection.exportCollection(childCollection, outputPath, exportSettings)
   end
 end
 
--- LrTasks.startAsyncTask(
---   function()
-    
---     -- local collections = catalog:getChildCollections()
---     -- exportCollection(collections[1])
-
---     local collectionSets = catalog:getChildCollectionSets()
---     -- exportCollectionSet(collectionSets[6], rootPath)
---     for _, collectionSet in ipairs(collectionSets) do
---       if collectionSet:getName() == "Curso de Iluminación" then
---         exportCollectionSet(collectionSet, rootPath)
---       end
---     end
---   end
--- )
-
-local function exportCollectionSets(collectionSets, path)
-    -- Iterate through all collections
+local function exportCollectionSets(collectionSets, path, exportSettingsPath)
     for _, collectionSet in ipairs(collectionsSets) do
-        exportCollectionSet(collection, path)
+        exportCollectionSet(collection, path, exportSettingsPath)
     end
 end
 

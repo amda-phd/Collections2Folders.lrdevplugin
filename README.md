@@ -24,7 +24,7 @@ If you're a fellow **developer** 🖥️ frustrated with the poor documentation 
 
 Install this plugin like any other Lightroom Classic plugin:
 
-1. Download this repo or clone it using `git clone `. Make sure the resulting folder containing the repo is called `Collections2Folders.lrplugin` and that it's placed in a suitable location in your machine.
+1. Download this repo or clone it using `git clone https://github.com/amda-phd/Collections2Folders.lrdevplugin`. Make sure the resulting folder containing the repo is called `Collections2Folders.lrdevplugin` and that it's placed in a suitable location in your machine.
 2. In Lightroom's plugin manager, add a new plugin and select the folder that you downloaded in the previous step.
 3. That's it, the plugin is installed. You should have access to its features in `Archive` -> `Plugin extras` -> `Collections2Folders`. You should see what is displayed in the image below.
 

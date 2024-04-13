@@ -3,9 +3,9 @@ return {
   LrSdkMinimumVersion = 13.0,
   LrToolkitIdentifier = "com.amda.Collections2Folders", 
   LrPluginName = "Collections2Folders",
-  LrPluginInfoUrl = "https://github.com/amda/Collections2Folders", -- URL for more info (replace with your GitHub URL)
+  LrPluginInfoUrl = "https://github.com/amda-phd/Collections2Folders.lrdevplugin",
   LrPluginAuthor = "amda",
-  LrPluginVersion = "0.1.0",
+  LrPluginVersion = "1.0.0",
   LrPluginDescription = "Export collections and collection sets hierarchy as folders.",
   LrExportMenuItems = {
       {

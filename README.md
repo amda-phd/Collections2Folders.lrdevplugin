@@ -4,7 +4,7 @@
 
 ## Description
 
-👋 Hi, Adobe Lightroom Classic user! Have you ever wanted to export all the collections contained in a collection set at once, with the same settings and maintaining the collection set's hierarchy as folders? Yeah, me too. That's what I wrote this simple plugin for.
+👋 Hi, **Adobe Lightroom Classic** user! Have you ever wanted to export all the collections contained in a collection set at once, with the same settings and maintaining the collection set's hierarchy as folders? Yeah, me too. That's what I wrote this simple plugin for.
 
 ### Warning
 
@@ -52,4 +52,47 @@ This dialog works exactly like the previous one, but instead of selecting just o
 
 ### Including export settings
 
-Unfortunately, I haven't found a way to access the user's export presets from the Lightroom SDK, so I cannot offer a way to select your export settings as you have them in Lightroom's export dialog.
+Unfortunately, I haven't found a way to access the user's export presets from the Lightroom SDK, so I cannot offer a way to select your export settings as you have them in Lightroom's export dialog. But you can still provide an export settings file for your exported collection sets. You can either:
+
+- Browse one of your already created export settings template. You'll find them in:
+  - Windows: `C:\Users\\[user]\AppData\Roaming\Adobe\Lightroom\Export Presets\User Presets`
+  - macOS: `User Library/Application Support/Adobe/Lightroom CC/Develop Presets/Users Presets`
+- Create your own custom settings file. It should look like [this](/assets/SampleExportSettings.lrtemplate):
+
+  ```lua
+    # ExportSettings.lrtemplate
+
+    s = {
+      id = "40A740D2-FA5C-4507-8FD0-789893B413FE",
+      internalName = "Sample",
+      title = "Sample",
+      type = "Export",
+      value = {
+        LR_format = "JPEG",
+        LR_jpeg_quality = 1,
+        LR_export_colorSpace = "AdobeRGB",
+        LR_minimizeEmbeddedMetadata = false,
+        LR_size_resolution = 300,
+        LR_size_doConstrain = false,
+        LR_size_doNotEnlarge = true,
+        LR_metadata_keywordOptions = "lightroomHierarchical",
+        LR_removeLocationMetadata = false,
+        LR_reimportExportedPhoto = false,
+        LR_collisionHandling = "overwrite",
+        LR_initialSequenceNumber = 1,
+        LR_renamingTokensOn = true,
+        LR_tokens = "{{date_YY}}{{date_MM}}{{date_DD}}_{{naming_sequenceNumber_3Digits}} - {{com.adobe.title}}"
+      },
+      version = 0,
+    }
+
+  ```
+  
+  If you need help defining the values for the export settings, I recommend you to review the section _Lightroom Classic built-in property keys_ (page 60) from the [Lightroom Classic SDK Guide](https://d1g4ig3mxc5xed.cloudfront.net/static/installers/lr/sdk/2020/doc/Lightroom%20Classic%20SDK%20Guide%202020.pdf).
+
+Remember that, however you choose to create the export settings file:
+
+- The extension must be `.lrtemplate`.
+- The format must be strictly the one presented in the previous lines. Otherwise, the export will not be completed the way you expect it to.
+- The keys `LR_export_destinationType`, `LR_export_destinationPathPrefix` and `LR_export_useSubfolder` will be overridden by the plugin. The rest of them will remain untouched. (No changes in your `.lrtemplate` file will be done)
+- If you don't provide any export settings, all the exports will be implemented using Lightroom's defaults.

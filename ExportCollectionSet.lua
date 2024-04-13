@@ -12,7 +12,7 @@ local function exportCollectionSet(collectionSet, path, exportSettingsPath)
   local outputPath = Utils.defineDestination(path, collectionSet:getName())
 
   for _, childCollectionSet in ipairs(childCollectionSets) do
-    exportCollectionSet(childCollectionSet, outputPath)
+    exportCollectionSet(childCollectionSet, outputPath, exportSettingsPath)
   end
 
   for _, childCollection in ipairs(childCollections) do

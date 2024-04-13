@@ -21,51 +21,37 @@ local function len(array)
 end
 
 local function loadExportSettings(path)
-  local exportSettings = {}
-
+  -- Use the default settings file if no path is provided
   if not path then
-    exportSettings = {
-      LR_format = "JPEG",
-      LR_jpeg_quality = 1,
-      LR_export_colorSpace = "AdobeRGB",
-      LR_minimizeEmbeddedMetadata = false,
-      LR_size_resolution = 300,
-      LR_size_doConstrain = false,
-      LR_size_doNotEnlarge = true,
-      LR_metadata_keywordOptions = "lightroomHierarchical",
-      LR_removeLocationMetadata = false,
-      LR_export_destinationType = "specificFolder",
-      LR_export_useSubfolder = false,
-      LR_reimportExportedPhoto = false,
-      LR_export_destinationPathPrefix = outputPath,
-      LR_collisionHandling = "overwrite",
-      LR_initialSequenceNumber = 1,
-      LR_renamingTokensOn = true,
-      LR_tokens = "{{date_YY}}{{date_MM}}{{date_DD}}_{{naming_sequenceNumber_3Digits}} - {{com.adobe.title}}"
-    }
-  else
-    local file
-    file = io.open(path, 'r')
-  
-    if file then
-      for line in file:lines() do
-        local key, value = string.match(line, "(.-)=(.*)")
-        if key == 'LR_jpeg_quality' or key == 'LR_size_resolution' or key == 'LR_initialSequenceNumber' then
-          value = tonumber(value)  -- Convert to number
-        elseif key == 'LR_minimizeEmbeddedMetadata' or key == 'LR_size_doConstrain' or key == 'LR_size_doNotEnlarge' or key == 'LR_export_useSubfolder' or key == 'LR_reimportExportedPhoto' or key == 'LR_renamingTokensOn' then
-          value = value == 'true'  -- Convert to boolean
-        elseif key == 'LR_export_destinationType' or key == 'LR_export_destinationPathPrefix' or key == 'LR_export_useSubfolder' then
-          
-        else
-          value = tostring(value)
-        end
-        exportSettings[key] = value
+    return {}
+  end
+
+  -- Load the .lrtemplate file
+  local file = io.open(path, "r")
+  if file then
+    local content = file:read("*all")
+    file:close()
+
+    -- Load and run the content as a Lua chunk
+    local settingsFunc, err = loadstring(content .. "; return s")
+    if err then
+      print("Error loading settings: " .. err)
+      return {}
+    end
+
+    if type(settingsFunc) == 'function' then
+      local success, settingsTable = pcall(settingsFunc)
+      if success and type(settingsTable) == 'table' and settingsTable.value then
+        return settingsTable.value
+      else
+        print("Error running settings function: " .. tostring(settingsTable))
       end
-      file:close()
+    else
+      print("Error: settingsFunc is not a function")
     end
   end
-  
-  return exportSettings
+
+  return {}
 end
 
 return {

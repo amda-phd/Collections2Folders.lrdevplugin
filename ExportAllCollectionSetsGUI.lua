@@ -58,9 +58,14 @@ local function showExportDialog()
           f:push_button {
             title = "Select Export Settings",
             action = function()
-              local result = LrDialogs.runOpenPanel({canChooseFiles = true, allowsMultipleSelection = false, canChooseDirectories = false, prompt = "Select ExportSettings.txt"})
+              local result = LrDialogs.runOpenPanel({canChooseFiles = true, allowsMultipleSelection = false, canChooseDirectories = false, prompt = "Select ExportSettings.lrtemplate"})
               if result then
-                properties.exportSettingsPath = result[1]
+                local filePath = result[1]
+                if filePath:sub(-11) ~= ".lrtemplate" then
+                  LrDialogs.message("Error", "Please select a .lrtemplate file.", "critical")
+                else
+                  properties.exportSettingsPath = filePath
+                end
               end
             end,
           },
